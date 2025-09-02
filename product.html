@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{BrandName} | Product Details</title>
+    <meta
+      name="description"
+      content="Short product details for our Norwegian bunad collection."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href="https://example.com/product.html" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <!-- Shared Header -->
+    <div data-include="partials/header.html"></div>
+
+    <main class="container">
+      <section
+        class="grid"
+        style="
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1rem;
+          align-items: start;
+          padding: 1.2rem 0;
+        "
+      >
+        <!-- Image -->
+        <article class="card">
+          <img
+            id="productImg"
+            src="assets/images/bunader/hardanger-01.jpg"
+            alt="Bunad image"
+            loading="lazy"
+          />
+        </article>
+
+        <!-- Short details -->
+        <article class="card">
+          <div class="content">
+            <h1 id="productName" style="margin-top: 0.2rem">Bunad</h1>
+            <p class="price" id="productPrice">NOK —</p>
+
+            <ul class="small" style="padding-left: 1rem; margin: 0.8rem 0">
+              <li>
+                <strong>Region:</strong> <span id="productRegion">—</span>
+              </li>
+              <li>
+                <strong>Gender:</strong> <span id="productGender">—</span>
+              </li>
+            </ul>
+
+            <div
+              style="
+                display: flex;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+                margin-top: 0.8rem;
+              "
+            >
+              <a class="btn outline" id="emailLink" href="mailto:{SupportEmail}"
+                >Email Us</a
+              >
+              <a
+                class="btn"
+                id="waLink"
+                href="https://wa.me/{WhatsAppNumber}?text=Hi%20{BrandName}%2C%20I%27m%20interested%20in%20this%20bunad."
+                >WhatsApp</a
+              >
+            </div>
+
+            <p class="small" style="margin-top: 1rem">
+              Need sizing or regional details? We’ll help you choose components
+              and bunadsølv.
+            </p>
+
+            <p style="margin-top: 1rem">
+              <a href="products.html" class="btn outline"
+                >← Back to All Bunader</a
+              >
+            </p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <!-- Shared Footer -->
+    <div data-include="partials/footer.html"></div>
+
+    <!-- Scripts -->
+    <script src="assets/js/includes.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+
+    <!-- Tiny page script to read ?id= and fill content -->
+    <script>
+      (function () {
+        // Keep image paths the SAME as your index.html setup
+        const PRODUCTS = {
+          "hardanger-01": {
+            name: "Hardanger Bunad (Kvinne)",
+            price: "NOK 19,900",
+            img: "assets/images/bunader/hardanger-01.jpg",
+            region: "Hardanger",
+            gender: "Kvinne",
+          },
+          "telemark-01": {
+            name: "Telemark Bunad (Kvinne)",
+            price: "NOK 21,500",
+            img: "assets/images/bunader/hardanger-01.jpg", // same path as index.html
+            region: "Telemark",
+            gender: "Kvinne",
+          },
+          "nordland-01": {
+            name: "Nordland Bunad (Kvinne)",
+            price: "NOK 21,000",
+            img: "assets/images/bunader/hardanger-01.jpg", // same path as index.html
+            region: "Nordland",
+            gender: "Kvinne",
+          },
+          "rogaland-01": {
+            name: "Rogaland Bunad (Kvinne)",
+            price: "NOK 20,500",
+            img: "assets/images/bunader/hardanger-01.jpg", // same path as index.html
+            region: "Rogaland",
+            gender: "Kvinne",
+          },
+          "sogne-01": {
+            name: "Sogne Bunad (Kvinne)",
+            price: "NOK 19,200",
+            img: "assets/images/bunader/hardanger-01.jpg", // same path as index.html
+            region: "Sogne",
+            gender: "Kvinne",
+          },
+          "tronder-01": {
+            name: "Trønder Bunad (Herre)",
+            price: "NOK 23,000",
+            img: "assets/images/bunader/hardanger-01.jpg", // same path as index.html
+            region: "Trøndelag",
+            gender: "Herre",
+          },
+        };
+
+        const params = new URLSearchParams(location.search);
+        const id = (params.get("id") || "hardanger-01").toLowerCase();
+        const p = PRODUCTS[id] || PRODUCTS["hardanger-01"];
+
+        // Fill DOM
+        const img = document.getElementById("productImg");
+        const name = document.getElementById("productName");
+        const price = document.getElementById("productPrice");
+        const region = document.getElementById("productRegion");
+        const gender = document.getElementById("productGender");
+        const wa = document.getElementById("waLink");
+
+        if (img) {
+          img.src = p.img;
+          img.alt = p.name;
+        }
+        if (name) name.textContent = p.name;
+        if (price) price.textContent = p.price;
+        if (region) region.textContent = p.region;
+        if (gender) gender.textContent = p.gender;
+
+        // Prefill WhatsApp with product name
+        if (wa) {
+          const base = "https://wa.me/{WhatsAppNumber}?text=";
+          const text = encodeURIComponent(
+            "Hi {BrandName}, I'm interested in the " + p.name + "."
+          );
+          wa.href = base + text;
+        }
+
+        // Update <title> for a nicer tab label
+        document.title = p.name + " | {BrandName}";
+
+        // Minimal Product JSON-LD (optional)
+        const ld = {
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          name: p.name,
+          image: [location.origin + "/" + p.img],
+          brand: "{BrandName}",
+          offers: {
+            "@type": "Offer",
+            price: (p.price || "").replace(/[^\d.]/g, ""),
+            priceCurrency: "NOK",
+            availability: "https://schema.org/InStock",
+          },
+        };
+        const script = document.createElement("script");
+        script.type = "application/ld+json";
+        script.textContent = JSON.stringify(ld);
+        document.head.appendChild(script);
+      })();
+    </script>
+  </body>
+</html>
