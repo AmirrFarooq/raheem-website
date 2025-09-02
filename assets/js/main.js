@@ -22,12 +22,24 @@ function setYear() {
   if (y) y.textContent = new Date().getFullYear();
 }
 
+function mobileNav() {
+  const btn = document.querySelector(".nav-toggle");
+  const list = document.getElementById("site-nav");
+  if (!btn || !list) return;
+  btn.addEventListener("click", () => {
+    const open = list.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+}
+
 // Run immediately (for pages without partials), then again after partials are injected
 document.addEventListener("DOMContentLoaded", () => {
   setYear();
   highlightActiveNav();
+  mobileNav();
 });
 document.addEventListener("partials:loaded", () => {
   setYear();
   highlightActiveNav();
+  mobileNav();
 });

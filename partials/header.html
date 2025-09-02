@@ -3,13 +3,24 @@
     <a href="index.html">
       <img
         src="assets/images/logo.svg"
-        onerror="this.onerror=null;this.src='assets/images/logo.svg';"
-        alt="{Raheem premium quality} logo"
+        alt="{BrandName} logo"
         width="140"
         style="height: auto; display: block"
       />
     </a>
-    <ul>
+
+    <!-- Mobile menu button -->
+    <button
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label="Menu"
+    >
+      ☰
+    </button>
+
+    <!-- Primary nav -->
+    <ul id="site-nav">
       <li><a href="index.html" data-nav="index.html">Home</a></li>
       <li><a href="products.html" data-nav="products.html">Products</a></li>
       <li><a href="about.html" data-nav="about.html">About</a></li>
